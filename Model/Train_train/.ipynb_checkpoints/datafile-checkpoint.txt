@@ -1,0 +1,9 @@
+Unique labels: ['BENIGN' 'DDoS' 'DoS GoldenEye' 'DoS Hulk' 'DoS Slowhttptest'
+ 'DoS slowloris' 'Heartbleed' 'PortScan' 'Web Attack � Brute Force'
+ 'Web Attack � Sql Injection' 'Web Attack � XSS']
+format with array id 
+pointing 
+ 0 - BENIGN
+ 1 - .....
+
+
