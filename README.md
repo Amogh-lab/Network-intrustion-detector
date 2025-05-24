@@ -1,4 +1,4 @@
-echo "# Network Intrusion Detection Model
+# Network Intrusion Detection Model
 
 This project implements a machine learning model for network intrusion detection using the CICIDS2017 dataset. The model is designed to classify network traffic into multiple categories of cyber attacks and benign activity, helping to identify and mitigate potential security threats in real time.
 
