@@ -1,6 +1,6 @@
 Unique labels: ['BENIGN' 'DDoS' 'DoS GoldenEye' 'DoS Hulk' 'DoS Slowhttptest'
  'DoS slowloris' 'Heartbleed' 'PortScan' 'Web Attack � Brute Force'
- 'Web Attack � Sql Injection' 'Web Attack � XSS']
+ 'Web Attack � Sql Injection' 'Web Attack � XSS']8
  
 format with array id 
 pointing 
