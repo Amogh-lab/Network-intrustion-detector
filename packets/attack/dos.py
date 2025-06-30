@@ -3,7 +3,7 @@ import random
 import time
 
 target_ip = "127.0.0.1"  # localhost or use 192.168.x.x for your actual IP
-target_port = 5000       # the port you're running Flask or another app on
+target_port = 80       # the port you're running Flask or another app on
 
 print(f"Starting DoS simulation on {target_ip}:{target_port}")
 
