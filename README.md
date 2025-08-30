@@ -52,7 +52,7 @@ A Random Forest classifier is used for its robustness and effectiveness in handl
 
 ## License
 
-Specify your license here.
+This project is licensed under the [MIT License](./LICENSE).
 
 ## Contact
 
