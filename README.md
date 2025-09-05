@@ -63,9 +63,9 @@ A Random Forest classifier is used for its robustness and effectiveness in handl
 2. **Start the Packet Capture Service**
 
    Open a terminal and run:
-    -This requires root permision for it to work 
-    -For Linux system use *sudo* 
-    -For Windows Make it *Run as Administrator*
+    - This requires root permision for it to work 
+    - For Linux system use *sudo* 
+    - For Windows Make it *Run as Administrator*
    ```bash
    python3 attributes/capture.py
    ```
