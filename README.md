@@ -50,9 +50,49 @@ A Random Forest classifier is used for its robustness and effectiveness in handl
 - scikit-learn
 - joblib
 
+## How to Run
+
+1. **Install Requirements**
+
+   Make sure you have Python 3.x installed. Then, install the required packages:
+
+   ```bash
+   pip install pandas numpy scikit-learn joblib flask streamlit scapy
+   ```
+
+2. **Start the Packet Capture Service**
+
+   Open a terminal and run:
+    -This requires root permision for it to work 
+    -For Linux system use *sudo* 
+    -For Windows Make it *Run as Administrator*
+   ```bash
+   python3 attributes/capture.py
+   ```
+
+   This will start the Flask server for capturing network flows.
+
+3. **Start the Intrusion Detection Dashboard**
+
+   Open another terminal and run:
+
+   ```bash
+   streamlit run Detect/server.py
+   ```
+
+   This will launch the Streamlit dashboard for real-time intrusion detection.
+
+4. **Usage**
+
+   - The dashboard will automatically start capturing and analyzing network flows.
+   - You can manually trigger a capture or enable auto-refresh for continuous monitoring.
+   - Prediction results will be displayed in the dashboard.
+
+**Note:** Make sure both services are running simultaneously for
+
 ## License
 
-This project is licensed under the [MIT License](./LICENSE).
+Specify your license here.
 
 ## Contact
 
