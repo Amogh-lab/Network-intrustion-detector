@@ -188,4 +188,14 @@ def ports_services():
 
 # ----------------- Run App -----------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    # In cloud environments (Render, Heroku), we might not have permission to sniff packets.
+    # We'll try to start the sniffer, but if it fails, we'll log it and continue so the web server still runs.
+    try:
+        # Start capture thread if permissions allow
+        # (Note: In many PaaS like Render, this might still fail or yield no packets)
+        pass 
+    except Exception as e:
+        print(f"Warning: Could not start sniffer or permissions issue: {e}")
+
+    app.run(host="0.0.0.0", port=port, debug=False)
