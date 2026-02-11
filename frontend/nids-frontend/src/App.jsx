@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { api } from "./services/api";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Radar, RadarChart, PolarGrid, PolarAngleAxis
@@ -16,7 +17,7 @@ export default function App() {
   const [cpuHistory, setCpuHistory] = useState([]);
   const [memoryHistory, setMemoryHistory] = useState([]);
   const [portsServices, setPortsServices] = useState([]);
-  const [alert, setAlert] = useState(null); 
+  const [alert, setAlert] = useState(null);
   const pdfRef = useRef();
 
   // --- Logic for ML Visualization ---
@@ -56,8 +57,8 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/live-data");
-        const json = await res.json();
+        const res = await api.get("/live-data");
+        const json = res.data;
         if (json.length > data.length) {
           const newEntry = json[json.length - 1];
           if (newEntry.attack !== "BENIGN") triggerAlert(newEntry);
@@ -92,8 +93,8 @@ export default function App() {
   useEffect(() => {
     const fetchPortsServices = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/ports-services");
-        const json = await res.json();
+        const res = await api.get("/ports-services");
+        const json = res.data;
         setPortsServices(json);
       } catch (err) {
         console.error(err);
@@ -161,7 +162,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white pt-20 px-6 relative overflow-x-hidden">
-      
+
       <Navbar section={section} setSection={setSection} />
 
       {/* Live Alert Notification */}
@@ -182,7 +183,7 @@ export default function App() {
           <motion.div key="dashboard" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col gap-8 pb-10">
             {/* Hero Header */}
             <motion.div className="bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
-               <div className="relative z-10">
+              <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="px-3 py-1 bg-neon/20 text-neon text-xs font-bold rounded-full border border-neon/30 animate-pulse">SYSTEM ACTIVE</span>
                   <span className="text-white/40 text-xs font-mono">ID: NIDS-AX-99</span>
@@ -191,12 +192,12 @@ export default function App() {
                   <span className="text-neon">Smart</span> NIDS Dashboard
                 </h1>
                 <p className="text-white/60 text-lg max-w-3xl leading-relaxed">
-                  Real-time network intrusion detection system leveraging machine learning to classify traffic 
+                  Real-time network intrusion detection system leveraging machine learning to classify traffic
                   and monitor port security across active socket layers.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                {[ { title: "Real-time", desc: "Live Traffic Analysis", color: "border-purple-500/50"}, { title: "ML Core", desc: "Pattern Classification", color: "border-neon/50"}, { title: "Network", desc: "Socket Monitoring", color: "border-cyan-500/50"} ].map((item, i) => (
+                {[{ title: "Real-time", desc: "Live Traffic Analysis", color: "border-purple-500/50" }, { title: "ML Core", desc: "Pattern Classification", color: "border-neon/50" }, { title: "Network", desc: "Socket Monitoring", color: "border-cyan-500/50" }].map((item, i) => (
                   <motion.div key={i} whileHover={{ y: -5 }} className={`bg-white/5 p-5 rounded-2xl border-l-4 ${item.color} backdrop-blur-md`}>
                     <h3 className="font-bold text-xl">{item.title}</h3>
                     <p className="text-white/40 text-sm">{item.desc}</p>
@@ -208,16 +209,16 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <motion.div whileHover={{ scale: 1.02 }} className="bg-glass p-6 rounded-3xl border border-white/10 shadow-xl flex flex-col justify-center items-center text-center">
-                   <h3 className="text-white/50 text-xs uppercase tracking-tighter mb-1">Active Ports</h3>
-                   <span className="text-4xl font-black text-neon">{activePorts}</span>
+                  <h3 className="text-white/50 text-xs uppercase tracking-tighter mb-1">Active Ports</h3>
+                  <span className="text-4xl font-black text-neon">{activePorts}</span>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.02 }} className="bg-glass p-6 rounded-3xl border border-white/10 shadow-xl flex flex-col justify-center items-center text-center">
-                   <h3 className="text-white/50 text-xs uppercase tracking-tighter mb-1">Threat Status</h3>
-                   <span className={`text-4xl font-black ${threatLevel === "HIGH" ? "text-red-500 animate-pulse" : "text-green-400"}`}>{threatLevel}</span>
+                  <h3 className="text-white/50 text-xs uppercase tracking-tighter mb-1">Threat Status</h3>
+                  <span className={`text-4xl font-black ${threatLevel === "HIGH" ? "text-red-500 animate-pulse" : "text-green-400"}`}>{threatLevel}</span>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.02 }} className="bg-glass p-6 rounded-3xl border border-white/10 shadow-xl flex flex-col justify-center items-center text-center">
-                   <h3 className="text-white/50 text-xs uppercase tracking-tighter mb-1">Total Packets</h3>
-                   <span className="text-4xl font-black text-orange-400">{history[history.length - 1]?.packets || 0}</span>
+                  <h3 className="text-white/50 text-xs uppercase tracking-tighter mb-1">Total Packets</h3>
+                  <span className="text-4xl font-black text-orange-400">{history[history.length - 1]?.packets || 0}</span>
                 </motion.div>
                 <div className="md:col-span-3 bg-black/40 border border-white/5 rounded-3xl p-8 h-48 relative overflow-hidden">
                   <div className="flex items-end justify-between h-full gap-1 pt-10">
@@ -250,11 +251,11 @@ export default function App() {
                 <h2 className="text-2xl mb-4 text-neon font-extrabold drop-shadow-neon">{card.title}</h2>
                 <ResponsiveContainer width="100%" height={180}>
                   <LineChart data={card.data}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#555555"/>
-                    <XAxis dataKey="time" stroke="#00fff7"/>
-                    <YAxis stroke={card.color} unit="%"/>
-                    <Tooltip contentStyle={{ backgroundColor: "#0f2027", border: `1px solid ${card.color}` }}/>
-                    <Line type="monotone" dataKey={card.title === "Network Packets/sec" ? "packets" : "value"} stroke={card.color} strokeWidth={3} dot={{ r: 3, fill: card.color }}/>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#555555" />
+                    <XAxis dataKey="time" stroke="#00fff7" />
+                    <YAxis stroke={card.color} unit="%" />
+                    <Tooltip contentStyle={{ backgroundColor: "#0f2027", border: `1px solid ${card.color}` }} />
+                    <Line type="monotone" dataKey={card.title === "Network Packets/sec" ? "packets" : "value"} stroke={card.color} strokeWidth={3} dot={{ r: 3, fill: card.color }} />
                   </LineChart>
                 </ResponsiveContainer>
               </motion.div>
@@ -262,17 +263,17 @@ export default function App() {
             <motion.div className="bg-glass backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl hover:scale-105 transition-all duration-500 flex flex-col justify-between">
               <h2 className="text-2xl mb-4 text-neon font-extrabold drop-shadow-neon">System Summary</h2>
               <div className="space-y-4">
-                <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Avg CPU:</span><span>{Math.round(cpuHistory.reduce((a,c)=>a+c.value,0)/Math.max(cpuHistory.length,1))}%</span></div>
-                <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Avg Memory:</span><span>{Math.round(memoryHistory.reduce((a,c)=>a+c.value,0)/Math.max(memoryHistory.length,1))}%</span></div>
+                <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Avg CPU:</span><span>{Math.round(cpuHistory.reduce((a, c) => a + c.value, 0) / Math.max(cpuHistory.length, 1))}%</span></div>
+                <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Avg Memory:</span><span>{Math.round(memoryHistory.reduce((a, c) => a + c.value, 0) / Math.max(memoryHistory.length, 1))}%</span></div>
                 <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Active Ports:</span><span>{activePorts}</span></div>
-                <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Threat Level:</span><span className={threatLevel==="HIGH"?"text-red-400 font-bold":"text-green-400 font-bold"}>{threatLevel}</span></div>
+                <div className="flex justify-between text-white/80 hover:text-[#00fff7] transition-all"><span>Threat Level:</span><span className={threatLevel === "HIGH" ? "text-red-400 font-bold" : "text-green-400 font-bold"}>{threatLevel}</span></div>
               </div>
             </motion.div>
             <motion.div className="md:col-span-4 bg-glass backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl mt-4 overflow-y-auto max-h-[300px]">
               <h2 className="text-2xl mb-4 text-neon font-extrabold drop-shadow-neon">Active Ports & Services</h2>
               <table className="w-full text-sm border-separate border-spacing-0">
                 <thead className="bg-black/40"><tr><th className="p-3 text-left">Port</th><th className="p-3 text-left">Service / App</th></tr></thead>
-                <tbody>{portsServices.map((row,i)=>(<tr key={i} className={`hover:bg-neon/10 transition-all ${i%2===0?"bg-black/20":"bg-black/10"}`}><td className="p-3 font-mono">{row.port}</td><td className="p-3">{row.service}</td></tr>))}</tbody>
+                <tbody>{portsServices.map((row, i) => (<tr key={i} className={`hover:bg-neon/10 transition-all ${i % 2 === 0 ? "bg-black/20" : "bg-black/10"}`}><td className="p-3 font-mono">{row.port}</td><td className="p-3">{row.service}</td></tr>))}</tbody>
               </table>
             </motion.div>
           </motion.div>
@@ -280,7 +281,7 @@ export default function App() {
 
         {/* ---------------- ML Predictions (New Analytics Included) ---------------- */}
         {section === "ML Predictions" && (
-          <motion.div key="ml" initial={{ opacity:0, y: 20 }} animate={{ opacity:1, y: 0 }} className="flex flex-col xl:flex-row gap-6 w-full pb-10">
+          <motion.div key="ml" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col xl:flex-row gap-6 w-full pb-10">
             <div className="xl:w-2/3 bg-black/40 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-2xl flex flex-col">
               <div className="flex justify-between items-center mb-6">
                 <div><h2 className="text-3xl font-black text-neon drop-shadow-neon">Classification Engine</h2></div>
