@@ -175,8 +175,19 @@ def live_data():
 
     # Try to start capture in a separate thread
     # In Render/Cloud, this might not pick up any packets due to permissions
+    # We explicitly catch PermissionError to avoid noisy logs in cloud
     try:
-        capture_thread = threading.Thread(target=lambda: sniff(prn=packet_handler, stop_filter=lambda _: stop_event.is_set(), timeout=2.5))
+        # Check if we have permissions before even trying to thread it
+        # (socket creation often fails immediately)
+        def start_sniff():
+             try:
+                sniff(prn=packet_handler, stop_filter=lambda _: stop_event.is_set(), timeout=2.5)
+             except (PermissionError, OSError) as e:
+                print(f"Sniffing permission denied (running in cloud mode): {e}")
+             except Exception as e:
+                print(f"Sniffing error: {e}")
+
+        capture_thread = threading.Thread(target=start_sniff)
         capture_thread.start()
         
         # Capture for 2 seconds
@@ -184,7 +195,7 @@ def live_data():
         stop_event.set()
         capture_thread.join()
     except Exception as e:
-        print(f"Sniffing failed (expected in cloud): {e}")
+        print(f"Main sniffing logic failed: {e}")
 
     # --- DEMO MODE FOR CLOUD DEPLOYMENT ---
     # If no packets caused flows, generate fake data so the deployed app looks "alive"

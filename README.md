@@ -42,6 +42,9 @@ dataset Link - https://drive.google.com/drive/folders/1fN-AcQUB1D4Hwn9UXK9OiHgNO
 
 A Random Forest classifier is used for its robustness and effectiveness in handling complex network traffic data with multiple classes.
 
+## Deployed link
+https://aiml-nids.netlify.app/
+
 ## Requirements
 
 - Python 3.x
